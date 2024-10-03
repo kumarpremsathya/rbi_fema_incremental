@@ -2,39 +2,29 @@ import sys
 import traceback
 import pandas as pd
 from datetime import datetime
-from functions import log
 from config import fema_config
 from sqlalchemy import create_engine
 from functions import  get_data_count_database, log, send_mail, insert_excel_data_to_mysql
-from sqlalchemy.sql import text
 from config import fema_config
 
 
-
-def check_increment_data(excel_path):
+def check_increment_data(exceL_path):
     print("check_increment_data function is called")
-
-
-
 
     try:
         # database_uri = f'mysql://{fema_config.user}:{fema_config.password}@{fema_config.host}/{fema_config.database}?auth_plugin={fema_config.auth_plugin}'
        
-        # # Directly define the database URI
-        
-        # # database_uri = f'mysql://{fema_config.user}:{fema_config.password}@{fema_config.host}/{fema_config.database}'
+        # Directly define the database URI
+        # database_uri = f'mysql://{fema_config.user}:{fema_config.password}@{fema_config.host}/{fema_config.database}'
         # engine = create_engine(database_uri)
-        query = "SELECT * FROM rbi_fema_python"
-       
+        
         with fema_config.db_connection() as connection:
+            query = "SELECT * FROM rbi_fema_python"
             database_df = pd.read_sql(query, con=connection)
-
-    
 
         missing_rows_in_db = []
         missing_rows_in_excel = []
-
-        
+  
         try:
             # # Connect to the database
             # with fema_config.db_connection() as connection:
@@ -42,11 +32,12 @@ def check_increment_data(excel_path):
             #     database_df = pd.read_sql(query, con=connection)
 
             # engine = get_db_engine()
-            # query = "SELECT * FROM rbi_fema"
+            # query = "SELECT * FROM rbi_fema_python"
             # database_df = pd.read_sql(query, con=engine)
 
             # Read Excel file
-            excel_df = pd.read_excel(excel_path)
+            
+            excel_df = pd.read_excel(exceL_path)
 
             # Ensure consistent types and formats
             database_df["name_of_applicant"] = database_df["name_of_applicant"].astype(str).str.strip()
@@ -85,14 +76,12 @@ def check_increment_data(excel_path):
         except:
             pass
 
-
         for row in missing_rows_in_excel:
             # print(missing_rows_in_excel)
             fema_config.deleted_sources += row["name_of_applicant"] + ", "
 
         # Convert missing_rows_in_excel to a DataFrame
         missing_rows_in_excel_df = pd.DataFrame(missing_rows_in_excel)
-
 
         # Update the flag column for the deleted sources in database as deleted
         # for index, row in missing_rows_in_excel_df.iterrows():
@@ -108,7 +97,6 @@ def check_increment_data(excel_path):
         updated_rows_in_db = []
         updated_rows_in_excel = []
 
-        
         print(len(missing_rows_in_db), "missing rows in database")
         print(len(missing_rows_in_excel), "missing rows in Excel")
         # print(missing_rows_in_db,"missing rows in db")
@@ -121,7 +109,7 @@ def check_increment_data(excel_path):
             fema_config.log_list[4] = get_data_count_database.get_data_count_database()
             # fema_config.log_list[6] = f"{update_db}, Some data are deleted in the website"
 
-            fema_config.log_list[6] = f"Some data are deleted in the website"
+            fema_config.log_list[6] = "Some data are deleted in the website"
             log.insert_log_into_table(fema_config.log_list)
             print("log table====", fema_config.log_list)
             fema_config.log_list = [None] * 8
@@ -132,9 +120,7 @@ def check_increment_data(excel_path):
             fema_config.log_list[4] = get_data_count_database.get_data_count_database()
             # fema_config.log_list[6] = f"{update_db}, no new data"
             
-            fema_config.log_list[6] = f"no new data"
-
-            fema_config.log_list[6] = f"no new data"
+            fema_config.log_list[6] = "no new data"
             log.insert_log_into_table(fema_config.log_list)
             print("log table====", fema_config.log_list)
             fema_config.log_list = [None] * 8

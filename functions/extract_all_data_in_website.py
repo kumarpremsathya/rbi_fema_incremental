@@ -12,11 +12,10 @@ import sys
 import traceback
 
 
-
 def extract_all_data_in_website():
 
     try:
-        try: 
+        try:
             # Setup WebDriver
             browser = webdriver.Chrome()
             # URL to scrape
@@ -30,9 +29,6 @@ def extract_all_data_in_website():
         except (TimeoutException, WebDriverException, NoSuchElementException) as e:
             raise Exception("Website not opened correctly") from e
         
-
-
-
         # Extract table data
         rows = table.find_elements(By.TAG_NAME, "tr")
         data = []
@@ -44,23 +40,16 @@ def extract_all_data_in_website():
         # Create a pandas DataFrame
         df = pd.DataFrame(data, columns=["name_of_applicant", "details_of_contraventions", "date_of_order", "amount_imposed"])
 
-
-
         first_excel_sheet_name = f"first_excel_sheet_{fema_config.current_date}.xlsx"
         
         first_exceL_sheet_path = rf"C:\Users\Premkumar.8265\Desktop\rbi_fema\data\first_excel_sheet\{first_excel_sheet_name}"
 
-        
-        df.to_excel(first_exceL_sheet_path, index = False)
-
+        df.to_excel(first_exceL_sheet_path, index=False)
 
         print(f"Data has been saved to {first_excel_sheet_name}")
         # print("df========\n\n", df.to_string( ))
-        check_increment_data.check_increment_data(first_excel_sheet_name)
-
-        
-        # Close the browser
-        browser.quit()
+        check_increment_data.check_increment_data(first_exceL_sheet_path)
+  
     except Exception as e:
         fema_config.log_list[1] = "Failure"
         fema_config.log_list[4] = get_data_count_database.get_data_count_database()

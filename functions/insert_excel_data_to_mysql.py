@@ -6,7 +6,6 @@ from config import fema_config
 from functions import get_data_count_database, send_mail, log
 
 
-
 def insert_excel_data_to_mysql(excel_file):
     print("insert_excel_data_to_mysql function is called")
 
@@ -17,7 +16,6 @@ def insert_excel_data_to_mysql(excel_file):
         # Read data from Excel
         df = pd.read_excel(excel_file)
 
-        
         # SQL insert query
         insert_query = """
         INSERT INTO rbi_fema_python(name_of_applicant, details_of_contraventions, date_of_order, amount_imposed, scraped_at)
@@ -37,7 +35,6 @@ def insert_excel_data_to_mysql(excel_file):
         # Commit the transaction
         connection.commit()
 
-
         fema_config.log_list[1] = "Success"
         fema_config.log_list[2] = fema_config.no_data_avaliable
         fema_config.log_list[3] = fema_config.no_data_scraped
@@ -47,7 +44,7 @@ def insert_excel_data_to_mysql(excel_file):
         log.insert_log_into_table(fema_config.log_list)
         fema_config.log_list = [None] * 8
         print("Data has been successfully inserted into the MySQL database.")
-        sys.exit( )
+        sys.exit()
     except Exception as e:
         fema_config.log_list[1] = "Failure"
         fema_config.log_list[4] = get_data_count_database.get_data_count_database()
@@ -64,5 +61,10 @@ def insert_excel_data_to_mysql(excel_file):
         print(f"Exception Object: {exc_obj}")
         print(f"Traceback: {exc_tb}")
         sys.exit("script error")
+
+
+
+
+
 
 

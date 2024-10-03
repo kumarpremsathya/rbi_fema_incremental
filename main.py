@@ -15,21 +15,18 @@ def main():
         # check_increment_data.check_increment_data(first_exceL_sheet_path)
         print("finished")
 
-
     elif fema_config.source_status == "Hibernated":
         fema_config.log_list[1] = "not run"
         fema_config.log_list[4] = get_data_count_database.get_data_count_database()
         print(fema_config.log_list)
         log.insert_log_into_table(fema_config.log_list)
 
-        
         exc_type, exc_obj, exc_tb = sys.exc_info()
         print(f"Error occurred at line {exc_tb.tb_lineno}:")
         print(f"Exception Type: {exc_type}")
         print(f"Exception Object: {exc_obj}")
         print(f"Traceback: {exc_tb}")
-        
-        
+            
     elif fema_config.source_status == "Inactive":
         fema_config.log_list[1] = "not run"
         fema_config.log_list[4] = get_data_count_database.get_data_count_database()
@@ -49,7 +46,6 @@ def main():
         print(f"Exception Object: {exc_obj}")
         print(f"Traceback: {exc_tb}")
         sys.exit("script error")
-
 
 
 if __name__ == "__main__":

@@ -6,6 +6,7 @@ cursor = connection.cursor()
 
 
 def get_data_count_database():
+    
     try:
         print("get_data_count_database function is called")
         cursor.execute("SELECT COUNT(*) FROM rbi_fema_python;")

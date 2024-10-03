@@ -2,9 +2,6 @@ from config import fema_config
 import sys
 
 
-
-
-
 def insert_log_into_table(log_list):
     print("insert_log_into_table function is called")
 

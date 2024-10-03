@@ -74,10 +74,7 @@ def read_excel_and_insert_to_mysql(excel_file):
 
 if __name__ == "__main__":
     # Step 1: Scrape data and save to Excel
-    # excel_file = scrape_rbi_data()
-    
-
-
+    excel_file = scrape_rbi_data()
         
     first_excel_sheet_name =f"first_excel_sheet_{fema_config.current_date}.xlsx"
     first_exceL_sheet_path = rf"C:\Users\Premkumar.8265\Desktop\rbi_fema\data\first_excel_sheet\{first_excel_sheet_name}"
